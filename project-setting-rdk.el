@@ -1,3 +1,9 @@
+;; control what feature to enable
+(setq enable-clang-completion t)
+(setq enable-cedet nil)
+(setq use-buildin-cedet nil)
+(setq use-gtags t)
+
 ;;Test Code
 ; (defconst my-project-include (concat (getenv "PWD") "/include"))
 ; (message my-project-include)

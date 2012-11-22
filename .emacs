@@ -169,13 +169,20 @@
 
 (defvar enable-cedet nil)
 (defvar use-buildin-cedet nil)
-(defvar enable-clang-completion nil)
-(defvar use-gtags nil)
+(defvar enable-clang-completion t) ;default enable clang completion
+(defvar use-gtags t) ;default enable gtags
 
-(setq enable-clang-completion t)
+;moved to project-setting.el
+; (setq enable-clang-completion t)
 ; (setq enable-cedet t)
 ; (setq use-buildin-cedet t)
-(setq use-gtags t)
+; (setq use-gtags t)
+
+;;we must load project-setting.el before loading my-ac-init.el,
+;;because my-ac-init.el use some var may changed in project-setting.el
+(when (file-exists-p "project-setting.el")
+  (defconst my-project-setting-file (concat (getenv "PWD") "/project-setting.el"))
+  (load-file my-project-setting-file))
 
 (load-file "~/.emacs.d/my-ac-init.el")
 (load-file "~/.emacs.d/my-igrep-init.el")
@@ -216,10 +223,6 @@
 (setq display-buffer-reuse-frames t)
 (setq split-width-threshold nil)
 
-
-(when (file-exists-p "project-setting.el")
-  (defconst my-project-setting-file (concat (getenv "PWD") "/project-setting.el"))
-  (load-file my-project-setting-file))
 
 (load-file "~/.emacs.d/my-doxymacs-init.el")
 

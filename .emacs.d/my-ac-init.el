@@ -4,7 +4,7 @@
 (ac-config-default)
 (setq ac-use-quick-help nil)
 (setq ac-ignore-case nil)
-(setq ac-auto-show-menu 0.1)
+(setq ac-auto-show-menu 0.5)
 (global-auto-complete-mode t)
 
 ; (setq ac-auto-start nil);;disable doing auto complete
@@ -13,21 +13,30 @@
 (global-set-key "\M-n>" 'auto-complete)
 ; (ac-set-trigger-key "TAB")
 
+(defun ac-complete-clang-self-insert (arg)
+  (interactive "p")
+  (self-insert-command arg)
+  (ac-complete-clang))
 ;;if want to use clang completion uncommented these lines
 ; (require 'auto-complete-clang)
 (defun my-ac-clang-setup ()
   (setq ac-sources
-        '(ac-source-clang
-           ac-source-yasnippet
-           ; ac-source-symbols
-           ;; ac-source-semantic
-           ac-source-abbrev
-           ac-source-words-in-buffer
-           ac-source-words-in-all-buffer
-           ;; ac-source-imenu
-           ac-source-files-in-current-dir
-           ac-source-filename))
+        '(;ac-source-clang
+          ac-source-yasnippet
+                                        ; ac-source-symbols
+          ;; ac-source-semantic
+          ac-source-abbrev
+          ac-source-words-in-buffer
+          ac-source-words-in-all-buffer
+          ;; ac-source-imenu
+          ac-source-files-in-current-dir
+          ac-source-filename))
   ; (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources))
+  ; These can speed up member completion while ac-sources is controlled
+  ; by ac-auto-show-menu setting
+  (local-set-key "." 'ac-complete-clang-self-insert) 
+  (local-set-key ">" 'ac-complete-clang-self-insert)
+  (local-set-key ":" 'ac-complete-clang-self-insert)
   )
 
 ; (add-hook 'c-mode-common-hook 'my-ac-clang-setup)
@@ -52,7 +61,7 @@
   (ac-complete-semantic))
 (defun my-ac-semantic-hook () 
   (setq ac-sources
-        '(ac-source-semantic
+        '(;ac-source-semantic
            ac-source-yasnippet
            ; ac-source-yasnippet
            ; ac-source-symbols
@@ -64,10 +73,11 @@
            ac-source-files-in-current-dir
            ac-source-filename))
   ; (setq ac-sources (append '(ac-source-semantic ac-source-yasnippet) ac-sources))
-  ;;don't auto completion for members, now do in auto-complete together
-  ;(local-set-key "." 'ac-complete-semantic-self-insert) 
-  ;(local-set-key ">" 'ac-complete-semantic-self-insert)
-  ;(local-set-key ":" 'ac-complete-semantic-self-insert)
+  ; These can speed up member completion while ac-sources is controlled
+  ; by ac-auto-show-menu setting
+  (local-set-key "." 'ac-complete-semantic-self-insert) 
+  (local-set-key ">" 'ac-complete-semantic-self-insert)
+  (local-set-key ":" 'ac-complete-semantic-self-insert)
   )
 ;;;(add-hook 'c-mode-common-hook 'my-c-mode-ac-complete-hook)
 
